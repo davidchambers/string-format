@@ -138,7 +138,7 @@ greet("Steve", 1)
 ### Running the test suite
 
     $ coffee tests.coffee
-    16 of 16 tests passed
+    37 of 37 tests passed
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format

@@ -70,5 +70,28 @@ ok '<a href="/inbox">view message{length!s}</a>'.format(['foo', 'bar'])
 ok '<a href="/inbox">view message{length!s}</a>'.format(['baz'])
  , '<a href="/inbox">view message</a>'
 
+# From Python's test suite:
+ok ''.format(null), ''
+ok 'abc'.format(null), 'abc'
+ok '{0}'.format('abc'), 'abc'
+ok 'X{0}'.format('abc'), 'Xabc'
+ok '{0}X'.format('abc'), 'abcX'
+ok 'X{0}Y'.format('abc'), 'XabcY'
+ok '{1}'.format(1, 'abc'), 'abc'
+ok 'X{1}'.format(1, 'abc'), 'Xabc'
+ok '{1}X'.format(1, 'abc'), 'abcX'
+ok 'X{1}Y'.format(1, 'abc'), 'XabcY'
+ok '{0}'.format(-15), '-15'
+ok '{0}{1}'.format(-15, 'abc'), '-15abc'
+ok '{0}X{1}'.format(-15, 'abc'), '-15Xabc'
+ok '{{'.format(null), '{'
+ok '}}'.format(null), '}'
+ok '{{}}'.format(null), '{}'
+ok '{{x}}'.format(null), '{x}'
+ok '{{{0}}}'.format(123), '{123}'
+ok '{{{{0}}}}'.format(null), '{{0}}'
+ok '}}{{'.format(null), '}{'
+ok '}}x{{'.format(null), '}x{'
+
 
 console.log "#{passes} of #{count} tests passed"
