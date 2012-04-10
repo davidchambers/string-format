@@ -1,11 +1,21 @@
 {
-  "name"        : "string-format",
-  "description" : "Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.",
-  "keywords"    : ["string", "formatting", "language", "util"],
-  "homepage"    : "https://github.com/davidchambers/string-format",
-  "bugs"        : "https://github.com/davidchambers/string-format/issues",
-  "repository"  : {"type": "git", "url": "https://github.com/davidchambers/string-format"},
-  "author"      : "David Chambers <dc@hashify.me>",
-  "main"        : "string-format.js",
-  "version"     : "0.1.0"
+  "name": "string-format",
+  "description": "Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.",
+  "keywords": ["string", "formatting", "language", "util"],
+  "homepage": "https://github.com/davidchambers/string-format",
+  "bugs": "https://github.com/davidchambers/string-format/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/davidchambers/string-format"
+  },
+  "author": "David Chambers <dc@hashify.me>",
+  "main": "string-format.js",
+  "version": "0.1.0",
+  "devDependencies": {
+    "coffee-script": "1.2.x",
+    "jessie": "0.4.x"
+  },
+  "scripts": {
+    "test": "node_modules/jessie/bin/jessie spec"
+  }
 }

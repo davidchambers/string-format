@@ -137,8 +137,8 @@ greet("Steve", 1)
 
 ### Running the test suite
 
-    $ coffee tests.coffee
-    37 of 37 tests passed
+    npm install
+    npm test
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format
