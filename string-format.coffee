@@ -31,7 +31,8 @@ lookup = (object, key) ->
   while match = /(.+?)[.](.+)/.exec key
     object = object[match[1]]
     key = match[2]
-  object[key]
+  value = object[key]
+  if typeof value is 'function' then value.call object else value
 
 format.transformers = {}
 

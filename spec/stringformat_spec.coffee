@@ -47,6 +47,12 @@ describe 'String::format', ->
     bobby = first_name: 'Bobby', last_name: 'Fischer'
     '{first_name} {last_name}'.format(bobby).should_be 'Bobby Fischer'
 
+  it 'invokes methods', ->
+    '{0.toLowerCase}'.format('III').should_be 'iii'
+    '{0.toUpperCase}'.format('iii').should_be 'III'
+    '{0.getFullYear}'.format(new Date '26 Apr 1984').should_be '1984'
+    '{pop}{pop}{pop}'.format(['one', 'two', 'three']).should_be 'threetwoone'
+
   String::format.transformers.s = -> 's' unless +this is 1
 
   it 'applies transformers to explicit positional arguments', ->

@@ -70,6 +70,19 @@ repo = owner: "pypy", slug: "pypy", followers: [...]
 # "pypy/pypy has 516 followers"
 ```
 
+If the referenced property is a method, it is invoked and the result is used
+as the replacement string:
+
+```coffeescript
+me = name: "David", dob: new Date "26 Apr 1984"
+
+"{name} was born in {dob.getFullYear}".format(me)
+# "David was born in 1984"
+
+"{pop}{pop}{pop}".format(["one", "two", "three"])
+# "threetwoone"
+```
+
 ### String.prototype.format.transformers
 
 “Transformers” can be attached to `String.prototype.format.transformers`:
