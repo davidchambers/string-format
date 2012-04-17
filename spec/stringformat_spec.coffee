@@ -52,6 +52,7 @@ describe 'String::format', ->
     '{0.toUpperCase}'.format('iii').should_be 'III'
     '{0.getFullYear}'.format(new Date '26 Apr 1984').should_be '1984'
     '{pop}{pop}{pop}'.format(['one', 'two', 'three']).should_be 'threetwoone'
+    '{quip.toUpperCase}'.format(quip: -> 'Bazinga!').should_be 'BAZINGA!'
 
   String::format.transformers.s = -> 's' unless +this is 1
 

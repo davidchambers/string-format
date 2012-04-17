@@ -79,8 +79,10 @@ me = name: "David", dob: new Date "26 Apr 1984"
 "{name} was born in {dob.getFullYear}".format(me)
 # "David was born in 1984"
 
-"{pop}{pop}{pop}".format(["one", "two", "three"])
-# "threetwoone"
+sheldon = quip: -> "Bazinga!"
+
+"I've always wanted to go to a goth club. {quip.toUpperCase}".format(sheldon)
+# "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
 ### String.prototype.format.transformers

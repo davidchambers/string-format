@@ -29,8 +29,11 @@ lookup = (object, key) ->
   unless /^(\d+)([.]|$)/.test key
     key = '0.' + key
   while match = /(.+?)[.](.+)/.exec key
-    object = object[match[1]]
+    object = resolve object, match[1]
     key = match[2]
+  resolve object, key
+
+resolve = (object, key) ->
   value = object[key]
   if typeof value is 'function' then value.call object else value
 
