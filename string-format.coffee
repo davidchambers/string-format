@@ -39,4 +39,4 @@ resolve = (object, key) ->
 
 format.transformers = {}
 
-format.version = '0.1.0'
+format.version = '0.2.0'
