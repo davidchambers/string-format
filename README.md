@@ -152,8 +152,8 @@ greet("Steve", 1)
 
 ### Running the test suite
 
-    npm install
-    npm test
+    make setup
+    make test
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format
