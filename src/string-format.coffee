@@ -1,6 +1,8 @@
 # vim: ts=2:sw=2:expandtab
 ###
-This fork is an attempt to implement python-style string formatting, as documented here:
+This is a fork of https://github.com/davidchambers/string-format
+
+This project attempts to implement python-style string formatting, as documented here:
 http://docs.python.org/2/library/string.html#format-string-syntax
 
 The format spec part is not complete, but it can handle field padding, float precision, and such
