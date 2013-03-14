@@ -1,6 +1,7 @@
 # vim: ts=2:sw=2:expandtab
 ###
-This is a fork of https://github.com/davidchambers/string-format
+Source code and build tools for this file are available at:
+https://github.com/deleted/string-format
 
 This project attempts to implement python-style string formatting, as documented here:
 http://docs.python.org/2/library/string.html#format-string-syntax
