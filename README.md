@@ -8,11 +8,11 @@ replaced with values determined by the arguments provided. A placeholder
 is a sequence of characters beginning with `{` and ending with `}`.
 
 ## About this Fork
-dchamber's original version implememnted nested variable interpolation, and
+dchamber's original version implemented nested variable interpolation, and
 included support for _transformations_ that would provide functionality
 similar to the _conversions_ in python's str.format()
 
-It did not implement printf()-style number formatting, so here I'm attempting to do that.
+It did not implement **printf()**-style number formatting, so here I'm attempting to do that.
 At the moment, only signs, interger precision, and field padding are implemented.
 
 
