@@ -1,6 +1,7 @@
 .PHONY: compile clean release setup test
 
-bin = node_modules/.bin
+#bin = node_modules/.bin
+bin = /usr/local/share/npm/bin/
 
 compile:
 	@$(bin)/coffee --compile --output lib src
