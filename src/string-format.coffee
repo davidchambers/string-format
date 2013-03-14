@@ -78,7 +78,7 @@ applyFormat = (value, formatSpec) ->
       if precision
         value = value.toFixed(parseInt(precision))
       else
-        value = ''+float
+        value = ''+value
     when 's' #string
       isNumeric = false
       value = '' + value
