@@ -84,7 +84,6 @@ applyFormat = (value, formatSpec) ->
       value = '' + value
 
   if isNumeric && sign
-    debugger;
     if sign in ["+"," "]
         if value[0] != '-'
           value = sign + value
