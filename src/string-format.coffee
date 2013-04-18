@@ -32,9 +32,9 @@ format = String::format = (args...) ->
       value = args[idx++] ? ''
 
     if formatSpec
-        value = applyFormat(value,  formatSpec)
+      value = applyFormat value,  formatSpec
     else
-      value = value.toString()
+      value = "#{value}"
     if fn = format.transformers[transformer] then fn.call(value) ? ''
     else value
 
@@ -54,7 +54,7 @@ resolve = (object, key) ->
 applyFormat = (value, formatSpec) ->
   pattern = ///
     ([^{}](?=[<>=^]))?([<>]^)? # fill & align
-    ([\+\-\x20])? # sign
+    ([-+\x20])? # sign
     (\#)? # integer base specifier
     (0)? # zero-padding
     (\d+)? # width
@@ -64,15 +64,14 @@ applyFormat = (value, formatSpec) ->
   ///
   [fill, align, sign, hash, zeropad, width, comma, precision, type] = formatSpec.match(pattern)[1..]
   if zeropad
-    fill = "0"
-    align = "="
-  if ! align
-    align = '>'
+    fill = '0'
+    align = '='
+  align or= '>'
 
   switch type
     when 'b', 'c', 'd', 'o', 'x', 'X', 'n' # integer
-      isNumeric = true
-      value = '' + parseInt(value)
+      isNumeric = yes
+      value = '' + parseInt(value, 10)
     when 'e','E','f','F','g','G','n','%' # float
       isNumeric = true
       value = parseFloat(value)
@@ -82,16 +81,16 @@ applyFormat = (value, formatSpec) ->
         value = ''+value
     when 's' #string
       isNumeric = false
-      value = '' + value
+      value = "#{value}"
 
-  if isNumeric && sign
+  if isNumeric and sign
     if sign in ["+"," "]
         if value[0] != '-'
           value = sign + value
   
-  if isNumeric && value[0] in "+-"
-    memoSign = value[0]
-    value = value[1..]
+  if isNumeric and value[0] in "+-"
+    memoSign = value.charAt 0
+    value = value.substr 1
 
   if fill
     value = ''+value
@@ -109,11 +108,10 @@ applyFormat = (value, formatSpec) ->
         when '^'
           throw new Error("Not implemented")
 
-  if memoSign
-    value = memoSign + value
+  value = if memoSign then "#{memoSign}#{value}" else value
 
   return value
 
-format.transformers = format.transformers || {}
+format.transformers or= {}
 
 format.version = '0.2.1'
