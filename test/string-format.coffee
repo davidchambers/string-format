@@ -101,3 +101,9 @@ describe 'String::format', ->
     '{{{{0}}}}'.format(null).should.equal '{{0}}'
     '}}{{'.format(null).should.equal '}{'
     '}}x{{'.format(null).should.equal '}x{'
+
+  it "correctly formats floats", ->
+    '{:0}'.format(1.2345).should.equal '1.2345'
+    '{:03.2f}'.format(1.2345).should.equal '001.23'
+    '{:03.2f}'.format(-1.2345).should.equal '-001.23'
+    '{:+02.3f}'.format(1.2345).should.equal '+01.234'

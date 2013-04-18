@@ -19,7 +19,7 @@ format = String::format = (args...) ->
 
   @replace \
   /([{}])\1|[{](.*?)(?:!([^:]+?)?)?(?::(.+?))?[}]/g,
-  (match, literal, key, conversion, formatSpec) ->
+  (match, literal, key, transformer, formatSpec) ->
     return literal if literal
 
     if key.length
@@ -35,7 +35,7 @@ format = String::format = (args...) ->
         value = applyFormat(value,  formatSpec)
     else
       value = value.toString()
-    if fn = format.conversions[conversion] then fn.call(value) ? ''
+    if fn = format.transformers[transformer] then fn.call(value) ? ''
     else value
 
 lookup = (object, key) ->
@@ -88,10 +88,14 @@ applyFormat = (value, formatSpec) ->
     if sign in ["+"," "]
         if value[0] != '-'
           value = sign + value
-
+  
+  if isNumeric && value[0] in "+-"
+    memoSign = value[0]
+    value = value[1..]
 
   if fill
-    while value.length < parseInt(width)
+    value = ''+value
+    while value.split('.')[0].length < parseInt(width)
       switch align
         when '='
           if value[0] in "+- "
@@ -105,8 +109,11 @@ applyFormat = (value, formatSpec) ->
         when '^'
           throw new Error("Not implemented")
 
+  if memoSign
+    value = memoSign + value
+
   return value
 
-format.conversions = {}
+format.transformers = format.transformers || {}
 
 format.version = '0.2.1'
