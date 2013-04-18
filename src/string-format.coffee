@@ -88,7 +88,7 @@ applyFormat = (value, formatSpec) ->
         if value[0] != '-'
           value = sign + value
   
-  if isNumeric and value[0] in "+-"
+  if isNumeric and value.charAt(0) in "+-"
     memoSign = value.charAt 0
     value = value.substr 1
 
