@@ -53,7 +53,7 @@ resolve = (object, key) ->
 # An implementation of http://docs.python.org/2/library/string.html#format-specification-mini-language
 applyFormat = (value, formatSpec) ->
   pattern = ///
-    ([^{}](?=[<>=^]))?([<>]^)? # fill & align
+    ([^{}](?=[<>=^]))?([<>=^])? # fill & align
     ([-+\x20])? # sign
     (\#)? # integer base specifier
     (0)? # zero-padding
@@ -64,9 +64,10 @@ applyFormat = (value, formatSpec) ->
   ///
   [fill, align, sign, hash, zeropad, width, comma, precision, type] = formatSpec.match(pattern)[1..]
   if zeropad
-    fill = '0'
-    align = '='
+    fill or= '0'
+    align or= '='
   align or= '>'
+  fill or= ' '
 
   switch type
     when 'b', 'c', 'd', 'o', 'x', 'X', 'n' # integer
@@ -78,7 +79,7 @@ applyFormat = (value, formatSpec) ->
       if precision
         value = value.toFixed(parseInt(precision))
       else
-        value = ''+value
+        value = "#{value}"
     when 's' #string
       isNumeric = false
       value = "#{value}"
@@ -88,27 +89,32 @@ applyFormat = (value, formatSpec) ->
         if value[0] != '-'
           value = sign + value
   
+  ###
   if isNumeric and value.charAt(0) in "+-"
     memoSign = value.charAt 0
     value = value.substr 1
+  ###
 
   if fill
     value = ''+value
-    while value.split('.')[0].length < parseInt(width)
+    while value.length < parseInt(width)
       switch align
         when '='
-          if value[0] in "+- "
-            value = value[0] + fill + value[1..]
+          # Forces the padding to be placed after the sign (if any) but before the digits.
+          if value.charAt(0) in "+- "
+            value = value.charAt(0) + fill + value[1..]
           else
             value = fill + value
         when '<'
+          # Forces the field to be left-aligned within the available space (this is the default for most objects).
           value = value + fill
         when '>'
+          # Forces the field to be right-aligned within the available space (this is the default for numbers).
           value = fill + value
         when '^'
           throw new Error("Not implemented")
 
-  value = if memoSign then "#{memoSign}#{value}" else value
+    #value = if memoSign then "#{memoSign}#{value}" else value
 
   return value
 

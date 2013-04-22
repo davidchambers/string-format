@@ -102,8 +102,20 @@ describe 'String::format', ->
     '}}{{'.format(null).should.equal '}{'
     '}}x{{'.format(null).should.equal '}x{'
 
+  it "correctly pads integer values", ->
+    '{:4d}'.format(1).should.equal '   1'
+    '{:04d}'.format(1).should.equal '0001'
+    '{:04d}'.format(-1).should.equal '-001'
+    '{:+04d}'.format(1).should.equal '+001'
+    '{: 04d}'.format(1).should.equal ' 001'
+    '{:x>04d}'.format(1).should.equal 'xxx1'
+    '{:x<04d}'.format(1).should.equal '1xxx'
+
   it "correctly formats floats", ->
     '{:0}'.format(1.2345).should.equal '1.2345'
-    '{:03.2f}'.format(1.2345).should.equal '001.23'
-    '{:03.2f}'.format(-1.2345).should.equal '-001.23'
-    '{:+02.3f}'.format(1.2345).should.equal '+01.234'
+    '{:.2f}'.format(1.2345).should.equal '1.23'
+    '{:.1f}'.format(-1.2345).should.equal '-1.2'
+    '{:+.2f}'.format(1.23456).should.equal '+1.23'
+    '{:06.2f}'.format(1.2345).should.equal '001.23'
+    '{:06.2f}'.format(-1.2345).should.equal '-01.23'
+    '{:+07.3f}'.format(1.2345).should.equal '+01.234'
