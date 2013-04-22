@@ -7,6 +7,16 @@ When `format` is invoked on a string, placeholders within the string are
 replaced with values determined by the arguments provided. A placeholder
 is a sequence of characters beginning with `{` and ending with `}`.
 
+## About this Fork
+dchambers's original version implemented nested variable interpolation, and
+included support for _transformations_ that would provide functionality
+similar to the _conversions_ in python's str.format()
+
+It did not implement **printf()**-style number formatting, so here I'm attempting to do that.
+At the moment, only signs, integer precision, and field padding are implemented.
+
+## Usage
+
 ### string.format(value1, value2, ..., valueN)
 
 Placeholders may contain numbers which refer to positional arguments:
