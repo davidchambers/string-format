@@ -46,6 +46,18 @@ describe 'String::format', ->
     assert.strictEqual '{{ {}: "{}" }}'.format('foo', 'bar'), '{ foo: "bar" }'
 
 
+  it 'does not allow unmatched, unescaped curly brackets', ->
+    assert.throws (-> 'foo { bar'.format()), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'unmatched, unescaped "{" in format string'
+
+    assert.throws (-> 'foo } bar'.format()), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'unmatched, unescaped "}" in format string'
+
+
   it 'supports property access via dot notation', ->
     bobby = first_name: 'Bobby', last_name: 'Fischer'
     garry = first_name: 'Garry', last_name: 'Kasparov'
@@ -93,6 +105,25 @@ describe 'String::format', ->
     assert.strictEqual text.format(new Array 2), '<a href="/inbox">view messages</a>'
 
 
+  it 'throws a ValueError if transformer name is absent', ->
+    assert.throws (-> '{!}'.format(123)), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'invalid transformer name'
+
+    assert.throws (-> '{!:}'.format(123)), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'invalid transformer name'
+
+
+  it 'throws a ValueError if given a nonexistent transformer name', ->
+    assert.throws (-> '{!x}'.format(123)), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'unknown transformer "x"'
+
+
   it 'provides a format function when "required"', ->
     assert.strictEqual(
       format("The name's {1}. {0} {1}.", 'James', 'Bond')
@@ -121,3 +152,39 @@ describe 'String::format', ->
     assert.strictEqual '{{{{0}}}}'.format(), '{{0}}'
     assert.strictEqual '}}{{'.format(), '}{'
     assert.strictEqual '}}x{{'.format(), '}x{'
+
+    assert.throws (-> '{'.format()), Error
+    assert.throws (-> '}'.format()), Error
+    assert.throws (-> 'a{'.format()), Error
+    assert.throws (-> 'a}'.format()), Error
+    assert.throws (-> '{a'.format()), Error
+    assert.throws (-> '}a'.format()), Error
+#   assert.throws (-> '{0}'.format()), Error
+#   assert.throws (-> '{1}'.format('abc')), Error
+#   assert.throws (-> '{x}'.format()), Error
+    assert.throws (-> '}{'.format()), Error
+#   assert.throws (-> 'abc{0:{}'.format()), Error
+    assert.throws (-> '{0'.format()), Error
+#   assert.throws (-> '{0.}'.format()), Error
+#   assert.throws (-> '{0.}'.format(0)), Error
+#   assert.throws (-> '{0[}'.format()), Error
+#   assert.throws (-> '{0[}'.format([])), Error
+#   assert.throws (-> '{0]}'.format()), Error
+#   assert.throws (-> '{0.[]}'.format(0)), Error
+#   assert.throws (-> '{0..foo}'.format(0)), Error
+#   assert.throws (-> '{0[0}'.format(0)), Error
+#   assert.throws (-> '{0[0:foo}'.format(0)), Error
+#   assert.throws (-> '{c]}'.format()), Error
+    assert.throws (-> '{{ {{{0}}'.format(0)), Error
+    assert.throws (-> '{0}}'.format(0)), Error
+#   assert.throws (-> '{foo}'.format(bar: 3)), Error
+    assert.throws (-> '{0!x}'.format(3)), Error
+    assert.throws (-> '{0!}'.format(0)), Error
+    assert.throws (-> '{!}'.format()), Error
+#   assert.throws (-> '{:}'.format()), Error
+#   assert.throws (-> '{:s}'.format()), Error
+#   assert.throws (-> '{}'.format()), Error
+
+    # string format spec errors
+#   assert.throws (-> '{0:-s}'.format('')), Error
+#   assert.throws (-> '{0:=s}'.format('')), Error
