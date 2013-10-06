@@ -41,7 +41,7 @@
   "proto": false,
   "scripturl": false,
   "shadow": false,
-  "sub": false,
+  "sub": true,
   "supernew": false,
   "validthis": false,
   "couch": false,

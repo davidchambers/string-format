@@ -21,7 +21,7 @@
   "requireCapitalizedConstructors": true,
   "requireCommaBeforeLineBreak": true,
   "requireCurlyBraces": ["if", "else", "for", "while", "do", "try", "catch", "finally"],
-  "requireDotNotation": true,
+  "requireDotNotation": false,
   "requireLineFeedAtFileEnd": true,
   "requireParenthesesAroundIIFE": true,
   "requireSpaceAfterBinaryOperators": ["+", "-", "/", "*", "=", "==", "===", "!=", "!==", ">", ">=", "<", "<=", "||", "&&", ",", ":"],
