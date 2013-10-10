@@ -16,7 +16,7 @@
     "url": "git://github.com/davidchambers/string-format.git"
   },
   "devDependencies": {
-    "coffee-script": "1.4.x",
-    "mocha": "1.7.x"
+    "coffee-script": "1.6.x",
+    "mocha": "1.13.x"
   }
 }
