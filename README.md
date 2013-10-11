@@ -134,14 +134,14 @@ String::format.transformers.s = -> "s" unless +this is 1
 
 String::format does not currently define any transformers.
 
-### string.format()
+### Creating reusable template functions
 
 If a format string is used in multiple places, one could assign it to
-a variable to avoid repetition. The idiomatic alternative is to invoke
-`String::format` with no arguments, which produces a reusable function:
+a variable to avoid repetition. The idiomatic alternative is to create
+a reusable template function via [`Function::bind`][2]:
 
 ```coffeescript
-greet = "{0}, you have {1} unread message{1!s}".format()
+greet = String::format.bind "{0}, you have {1} unread message{1!s}"
 
 greet("Holly", 2)
 # "Holly, you have 2 unread messages"
@@ -157,3 +157,4 @@ greet("Steve", 1)
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format
+[2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind

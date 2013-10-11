@@ -1,11 +1,8 @@
 format = String::format = (args...) ->
 
-  if args.length is 0
-    return (args...) => @format args...
-
   idx = 0
   explicit = implicit = no
-  message = 'cannot switch from {} to {} numbering'.format()
+  message = 'cannot switch from {} to {} numbering'
 
   @replace \
   /([{}])\1|[{](.*?)(?:!(.+?))?[}]/g,
@@ -14,11 +11,11 @@ format = String::format = (args...) ->
 
     if key.length
       explicit = yes
-      throw new Error message 'implicit', 'explicit' if implicit
+      throw new Error message.format('implicit', 'explicit') if implicit
       value = lookup(args, key) ? ''
     else
       implicit = yes
-      throw new Error message 'explicit', 'implicit' if explicit
+      throw new Error message.format('explicit', 'implicit') if explicit
       value = args[idx++] ? ''
 
     value = value.toString()

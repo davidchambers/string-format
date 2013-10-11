@@ -30,16 +30,6 @@ describe 'String::format', ->
       'the meaning of life is 42 (6 x 7 is also 42)')
 
 
-  it 'creates a reusable template function when invoked with no arguments', ->
-    explicit = '{0}, you have {1} unread message{2}'.format()
-    implicit = '{}, you have {} unread message{}'.format()
-
-    assert.strictEqual explicit('Holly', 2, 's'), 'Holly, you have 2 unread messages'
-    assert.strictEqual implicit('Holly', 2, 's'), 'Holly, you have 2 unread messages'
-    assert.strictEqual explicit('Steve', 1), 'Steve, you have 1 unread message'
-    assert.strictEqual implicit('Steve', 1), 'Steve, you have 1 unread message'
-
-
   it 'does not allow explicit and implicit numbering to be intermingled', ->
     assert.throws(
       (-> '{} {0}'.format 'foo', 'bar')
@@ -106,8 +96,8 @@ describe 'String::format', ->
 
 
   it "passes applicable tests from Python's test suite", ->
-    assert.strictEqual ''.format(null), ''
-    assert.strictEqual 'abc'.format(null), 'abc'
+    assert.strictEqual ''.format(), ''
+    assert.strictEqual 'abc'.format(), 'abc'
     assert.strictEqual '{0}'.format('abc'), 'abc'
     assert.strictEqual 'X{0}'.format('abc'), 'Xabc'
     assert.strictEqual '{0}X'.format('abc'), 'abcX'
@@ -119,11 +109,11 @@ describe 'String::format', ->
     assert.strictEqual '{0}'.format(-15), '-15'
     assert.strictEqual '{0}{1}'.format(-15, 'abc'), '-15abc'
     assert.strictEqual '{0}X{1}'.format(-15, 'abc'), '-15Xabc'
-    assert.strictEqual '{{'.format(null), '{'
-    assert.strictEqual '}}'.format(null), '}'
-    assert.strictEqual '{{}}'.format(null), '{}'
-    assert.strictEqual '{{x}}'.format(null), '{x}'
+    assert.strictEqual '{{'.format(), '{'
+    assert.strictEqual '}}'.format(), '}'
+    assert.strictEqual '{{}}'.format(), '{}'
+    assert.strictEqual '{{x}}'.format(), '{x}'
     assert.strictEqual '{{{0}}}'.format(123), '{123}'
-    assert.strictEqual '{{{{0}}}}'.format(null), '{{0}}'
-    assert.strictEqual '}}{{'.format(null), '}{'
-    assert.strictEqual '}}x{{'.format(null), '}x{'
+    assert.strictEqual '{{{{0}}}}'.format(), '{{0}}'
+    assert.strictEqual '}}{{'.format(), '}{'
+    assert.strictEqual '}}x{{'.format(), '}x{'
