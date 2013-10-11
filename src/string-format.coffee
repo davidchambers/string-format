@@ -1,10 +1,10 @@
-format = String::format = (args...) ->
+format = (template, args...) ->
 
   idx = 0
   explicit = implicit = no
   message = 'cannot switch from {} to {} numbering'
 
-  @replace \
+  template.replace \
   /([{}])\1|[{](.*?)(?:!(.+?))?[}]/g,
   (match, literal, key, transformer) ->
     return literal if literal
@@ -34,6 +34,12 @@ resolve = (object, key) ->
   value = object[key]
   if typeof value is 'function' then value.call object else value
 
-format.transformers = {}
 
-format.version = '0.2.1'
+String::format = (args...) -> format this, args...
+
+String::format.transformers = format.transformers = {}
+
+String::format.version = format.version = '0.2.1'
+
+
+module?.exports = format

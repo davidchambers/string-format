@@ -1,6 +1,6 @@
 assert = require 'assert'
 
-require '../src/string-format'
+format = require '../src/string-format'
 
 
 describe 'String::format', ->
@@ -93,6 +93,12 @@ describe 'String::format', ->
     text = '<a href="/inbox">view message{length!s}</a>'
     assert.strictEqual text.format(new Array 1), '<a href="/inbox">view message</a>'
     assert.strictEqual text.format(new Array 2), '<a href="/inbox">view messages</a>'
+
+
+  it 'provides a format function when "required"', ->
+    assert.strictEqual(
+      format("The name's {1}. {0} {1}.", 'James', 'Bond')
+      "The name's Bond. James Bond.")
 
 
   it "passes applicable tests from Python's test suite", ->

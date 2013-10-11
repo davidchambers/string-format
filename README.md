@@ -134,6 +134,19 @@ String::format.transformers.s = -> "s" unless +this is 1
 
 String::format does not currently define any transformers.
 
+### format(template, value1, value2, ..., valueN)
+
+The module provides a format function when "required":
+
+```coffeescript
+format = require "string-format"
+
+format("The name's {1}. {0} {1}.", "James", "Bond")
+# "The name's Bond. James Bond."
+```
+
+`format(str, x, y, z)` is equivalent to `str.format(x, y, z)`.
+
 ### Creating reusable template functions
 
 If a format string is used in multiple places, one could assign it to
