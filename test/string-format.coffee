@@ -12,16 +12,17 @@ describe 'String::format', ->
       'Holly, you have 2 unread messages')
 
 
-  it 'strips unmatched placeholders', ->
-    assert.strictEqual(
-      '{0}, you have {1} unread message{2}'.format('Steve', 1)
-      'Steve, you have 1 unread message')
+  it 'throws a KeyError if there are unmatched placeholders', ->
+    assert.throws (-> '{0} {1} {2}'.format('x', 'y')), (err) ->
+      err instanceof Error and
+      err.name is 'KeyError' and
+      err.message is '"2"'
 
 
   it 'allows indexes to be omitted if they are entirely sequential', ->
     assert.strictEqual(
-      '{}, you have {} unread message{}'.format('Steve', 1)
-      'Steve, you have 1 unread message')
+      '{}, you have {} unread message{}'.format('Holly', 2, 's')
+      'Holly, you have 2 unread messages')
 
 
   it 'replaces all occurrences of a placeholder', ->
@@ -159,31 +160,31 @@ describe 'String::format', ->
     assert.throws (-> 'a}'.format()), Error
     assert.throws (-> '{a'.format()), Error
     assert.throws (-> '}a'.format()), Error
-#   assert.throws (-> '{0}'.format()), Error
-#   assert.throws (-> '{1}'.format('abc')), Error
-#   assert.throws (-> '{x}'.format()), Error
+    assert.throws (-> '{0}'.format()), Error
+    assert.throws (-> '{1}'.format('abc')), Error
+    assert.throws (-> '{x}'.format()), Error
     assert.throws (-> '}{'.format()), Error
-#   assert.throws (-> 'abc{0:{}'.format()), Error
+    assert.throws (-> 'abc{0:{}'.format()), Error
     assert.throws (-> '{0'.format()), Error
-#   assert.throws (-> '{0.}'.format()), Error
-#   assert.throws (-> '{0.}'.format(0)), Error
-#   assert.throws (-> '{0[}'.format()), Error
-#   assert.throws (-> '{0[}'.format([])), Error
-#   assert.throws (-> '{0]}'.format()), Error
-#   assert.throws (-> '{0.[]}'.format(0)), Error
-#   assert.throws (-> '{0..foo}'.format(0)), Error
-#   assert.throws (-> '{0[0}'.format(0)), Error
-#   assert.throws (-> '{0[0:foo}'.format(0)), Error
-#   assert.throws (-> '{c]}'.format()), Error
+    assert.throws (-> '{0.}'.format()), Error
+    assert.throws (-> '{0.}'.format(0)), Error
+    assert.throws (-> '{0[}'.format()), Error
+    assert.throws (-> '{0[}'.format([])), Error
+    assert.throws (-> '{0]}'.format()), Error
+    assert.throws (-> '{0.[]}'.format(0)), Error
+    assert.throws (-> '{0..foo}'.format(0)), Error
+    assert.throws (-> '{0[0}'.format(0)), Error
+    assert.throws (-> '{0[0:foo}'.format(0)), Error
+    assert.throws (-> '{c]}'.format()), Error
     assert.throws (-> '{{ {{{0}}'.format(0)), Error
     assert.throws (-> '{0}}'.format(0)), Error
-#   assert.throws (-> '{foo}'.format(bar: 3)), Error
+    assert.throws (-> '{foo}'.format(bar: 3)), Error
     assert.throws (-> '{0!x}'.format(3)), Error
     assert.throws (-> '{0!}'.format(0)), Error
     assert.throws (-> '{!}'.format()), Error
-#   assert.throws (-> '{:}'.format()), Error
-#   assert.throws (-> '{:s}'.format()), Error
-#   assert.throws (-> '{}'.format()), Error
+    assert.throws (-> '{:}'.format()), Error
+    assert.throws (-> '{:s}'.format()), Error
+    assert.throws (-> '{}'.format()), Error
 
     # string format spec errors
 #   assert.throws (-> '{0:-s}'.format('')), Error

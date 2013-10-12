@@ -16,11 +16,11 @@ Placeholders may contain numbers which refer to positional arguments:
 # "Holly, you have 2 unread messages"
 ```
 
-Unmatched placeholders produce no output:
+A KeyError is thrown if there are unmatched placeholders:
 
 ```coffeescript
-"{0}, you have {1} unread message{2}".format("Steve", 1)
-# "Steve, you have 1 unread message"
+"{0} {1} {2}".format("x", "y")
+# KeyError: "2"
 ```
 
 A format string may reference a positional argument multiple times:

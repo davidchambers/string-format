@@ -2,6 +2,11 @@ last = (array) ->
   array[array.length - 1]
 
 
+class KeyError extends Error
+  constructor: (@message) ->
+  name: 'KeyError'
+
+
 class ValueError extends Error
   constructor: (@message) ->
   name: 'ValueError'
@@ -67,9 +72,14 @@ tokenize = (source) ->
   tokens
 
 
+primitives = boolean: Boolean, number: Number, string: String
+
 eval_ = (expr, ctx) ->
   for key in expr.field_name.split('.')
-    if Object::toString.call(ctx[key]) is '[object Function]'
+    type = typeof ctx
+    if key not of (if type of primitives then new primitives[type] else ctx)
+      throw new KeyError '"{}"'.format key.replace(/"/g, '\\"')
+    else if Object::toString.call(ctx[key]) is '[object Function]'
       ctx = ctx[key]()
     else
       ctx = ctx[key]
