@@ -41,7 +41,7 @@ A format string must not contain both implicit and explicit references:
 
 ```coffeescript
 "My name is {} {}. Do you like the name {0}?".format("Lemony", "Snicket")
-# ERROR: cannot switch from implicit to explicit numbering
+# ValueError: cannot switch from implicit to explicit numbering
 ```
 
 `{{` and `}}` in format strings produce `{` and `}`:
