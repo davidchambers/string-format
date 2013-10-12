@@ -39,10 +39,6 @@ describe 'String::format', ->
       (-> '{1} {}'.format 'foo', 'bar')
       /cannot switch from explicit to implicit numbering/)
 
-    assert.throws(
-      (-> '{1} {}'.format() 'foo', 'bar')
-      /cannot switch from explicit to implicit numbering/)
-
 
   it 'treats "{{" and "}}" as "{" and "}"', ->
     assert.strictEqual '{{ {}: "{}" }}'.format('foo', 'bar'), '{ foo: "bar" }'
