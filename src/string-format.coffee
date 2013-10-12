@@ -1,3 +1,8 @@
+class ValueError extends Error
+  constructor: (@message) ->
+  name: 'ValueError'
+
+
 format = (template, args...) ->
 
   idx = 0
@@ -11,11 +16,11 @@ format = (template, args...) ->
 
     if key.length
       explicit = yes
-      throw new Error message.format('implicit', 'explicit') if implicit
+      throw new ValueError message.format('implicit', 'explicit') if implicit
       value = lookup(args, key) ? ''
     else
       implicit = yes
-      throw new Error message.format('explicit', 'implicit') if explicit
+      throw new ValueError message.format('explicit', 'implicit') if explicit
       value = args[idx++] ? ''
 
     value = value.toString()

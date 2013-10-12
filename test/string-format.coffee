@@ -31,13 +31,15 @@ describe 'String::format', ->
 
 
   it 'does not allow explicit and implicit numbering to be intermingled', ->
-    assert.throws(
-      (-> '{} {0}'.format 'foo', 'bar')
-      /cannot switch from implicit to explicit numbering/)
+    assert.throws (-> '{} {0}'.format('foo', 'bar')), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'cannot switch from implicit to explicit numbering'
 
-    assert.throws(
-      (-> '{1} {}'.format 'foo', 'bar')
-      /cannot switch from explicit to implicit numbering/)
+    assert.throws (-> '{1} {}'.format('foo', 'bar')), (err) ->
+      err instanceof Error and
+      err.name is 'ValueError' and
+      err.message is 'cannot switch from explicit to implicit numbering'
 
 
   it 'treats "{{" and "}}" as "{" and "}"', ->
