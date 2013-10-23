@@ -90,31 +90,17 @@ sheldon = quip: -> "Bazinga!"
 “Transformers” can be attached to `String.prototype.format.transformers`:
 
 ```coffeescript
-String::format.transformers.upper = -> @toUpperCase()
+String::format.transformers.upper = (str) -> str.toUpperCase()
 
 "Batman's preferred onomatopoeia: {0!upper}".format("pow!")
 # "Batman's preferred onomatopoeia: POW!"
 ```
 
-Within a transformer, `this` is the string returned by the referenced object's
-`toString` method, so transformers may be used in conjunction with non-string
-objects:
-
-```coffeescript
-peter_parker =
-  first_name: "Peter"
-  last_name: "Parker"
-  toString: -> @first_name + " " + @last_name
-
-"NAME: {!upper}".format(peter_parker)
-# "NAME: PETER PARKER"
-```
-
 A transformer could sanitizing untrusted input:
 
 ```coffeescript
-String::format.transformers.escape = ->
-  @replace /[&<>"'`]/g, (chr) -> "&#" + chr.charCodeAt(0) + ";"
+String::format.transformers.escape = (str) ->
+  str.replace /[&<>"'`]/g, (chr) -> "&#" + chr.charCodeAt(0) + ";"
 
 "<p class=status>{!escape}</p>".format("I <3 EICH")
 # "<p class=status>I &#60;3 EICH</p>"
@@ -123,7 +109,7 @@ String::format.transformers.escape = ->
 Or pluralize nouns, perhaps:
 
 ```coffeescript
-String::format.transformers.s = -> "s" unless +this is 1
+String::format.transformers.s = (num) -> if num is 1 then "" else "s"
 
 "{0}, you have {1} unread message{1!s}".format("Holly", 2)
 # "Holly, you have 2 unread messages"

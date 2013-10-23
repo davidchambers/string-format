@@ -67,7 +67,7 @@ describe 'String::format', ->
     assert.strictEqual '{quip.toUpperCase}'.format(quip: -> 'Bazinga!'), 'BAZINGA!'
 
 
-  String::format.transformers.s = -> 's' unless +this is 1
+  String::format.transformers.s = (num) -> if num is 1 then '' else 's'
 
 
   it 'applies transformers to explicit positional arguments', ->

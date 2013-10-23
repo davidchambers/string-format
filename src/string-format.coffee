@@ -23,9 +23,7 @@ format = (template, args...) ->
       throw new ValueError message.format('explicit', 'implicit') if explicit
       value = args[idx++] ? ''
 
-    value = value.toString()
-    if fn = format.transformers[transformer] then fn.call(value) ? ''
-    else value
+    if fn = format.transformers[transformer] then fn value else value
 
 lookup = (object, key) ->
   unless /^(\d+)([.]|$)/.test key
