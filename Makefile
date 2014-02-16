@@ -17,16 +17,23 @@ clean:
 	rm -f $(JS_FILES)
 
 
+.PHONY: release-patch release-minor release-major
+VERSION = $(shell node -p 'require("./package.json").version')
+release-patch: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "patch")')
+release-minor: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "minor")')
+release-major: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "major")')
+release-patch: release
+release-minor: release
+release-major: release
+
 .PHONY: release
 release:
-ifndef VERSION
-	$(error VERSION is undefined)
-endif
-	sed -i '' 's!\("version": "\)[0-9.]*\("\)!\1$(VERSION)\2!' package.json
-	sed -i '' "s!\(.version = '\)[0-9.]*\('\)!\1$(VERSION)\2!" src/string-format.coffee
+	sed -i '' 's/"version": "[^"]*"/"version": "$(NEXT_VERSION)"/' package.json
+	sed -i '' "s/.version = '[^']*'/.version = '$(NEXT_VERSION)'/" src/string-format.coffee
 	make
 	git add package.json src/string-format.coffee lib/string-format.js
-	git commit --message $(VERSION)
+	git commit --message $(NEXT_VERSION)
+	git tag $(NEXT_VERSION)
 	@echo 'remember to run `npm publish`'
 
 
