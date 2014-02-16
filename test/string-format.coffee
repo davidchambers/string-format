@@ -1,6 +1,6 @@
 assert = require 'assert'
 
-format = require '../src/string-format'
+format = require '..'
 
 
 describe 'String::format', ->
