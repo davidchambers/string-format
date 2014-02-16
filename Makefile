@@ -1,13 +1,22 @@
-bin = node_modules/.bin
+COFFEE = node_modules/.bin/coffee
+MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script
 
-lib/string-format.js: src/string-format.coffee
+JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
+
+
+.PHONY: all
+all: $(JS_FILES)
+
+lib/%.js: src/%.coffee
 	@mkdir -p $(@D)
-	@cat $< | $(bin)/coffee --compile --stdio > $@
+	@cat $< | $(COFFEE) --compile --stdio > $@
+
 
 .PHONY: clean
 clean:
 	@rm -rf node_modules
-	@git checkout -- lib
+	@rm -f $(JS_FILES)
+
 
 .PHONY: release
 release:
@@ -21,10 +30,12 @@ endif
 	@git commit --message $(VERSION)
 	@echo 'remember to run `npm publish`'
 
+
 .PHONY: setup
 setup:
 	@npm install
 
+
 .PHONY: test
 test:
-	@$(bin)/mocha --compilers coffee:coffee-script
+	@$(MOCHA)
