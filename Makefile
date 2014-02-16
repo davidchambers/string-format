@@ -8,8 +8,7 @@ JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
 all: $(JS_FILES)
 
 lib/%.js: src/%.coffee
-	mkdir -p $(@D)
-	cat $< | $(COFFEE) --compile --stdio > $@
+	$(COFFEE) --compile --output $(@D) $<
 
 
 .PHONY: clean
