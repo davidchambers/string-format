@@ -1,5 +1,6 @@
 COFFEE = node_modules/.bin/coffee
 MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script
+SEMVER = node_modules/.bin/semver
 
 JS_FILES = $(patsubst src/%.coffee,lib/%.js,$(shell find src -type f))
 
@@ -18,9 +19,9 @@ clean:
 
 .PHONY: release-patch release-minor release-major
 VERSION = $(shell node -p 'require("./package.json").version')
-release-patch: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "patch")')
-release-minor: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "minor")')
-release-major: NEXT_VERSION = $(shell node -p 'require("semver").inc("$(VERSION)", "major")')
+release-patch: NEXT_VERSION = $(shell $(SEMVER) -i patch $(VERSION))
+release-minor: NEXT_VERSION = $(shell $(SEMVER) -i minor $(VERSION))
+release-major: NEXT_VERSION = $(shell $(SEMVER) -i major $(VERSION))
 release-patch: release
 release-minor: release
 release-major: release
