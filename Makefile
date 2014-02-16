@@ -14,7 +14,6 @@ lib/%.js: src/%.coffee
 
 .PHONY: clean
 clean:
-	rm -rf node_modules
 	rm -f $(JS_FILES)
 
 
