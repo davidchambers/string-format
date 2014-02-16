@@ -2,7 +2,7 @@
   "name": "string-format",
   "version": "0.2.1",
   "description": "Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.",
-  "author": "David Chambers <dc@hashify.me>",
+  "author": "David Chambers <dc@davidchambers.me>",
   "keywords": ["string", "formatting", "language", "util"],
   "main": "./lib/string-format",
   "homepage": "https://github.com/davidchambers/string-format",
