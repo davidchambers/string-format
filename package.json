@@ -18,6 +18,6 @@
   "devDependencies": {
     "coffee-script": "1.6.x",
     "mocha": "1.13.x",
-    "semver": "2.2.x"
+    "xyz": "0.4.x"
   }
 }

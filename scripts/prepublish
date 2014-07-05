@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+sed -i '' "s/version = '[^']*'/version = '$VERSION'/"   src/string-format.coffee
+git add                                                 src/string-format.coffee
+
+rm -f                                   lib/string-format.js
+make                                    lib/string-format.js
+git update-index --no-assume-unchanged  lib/string-format.js
+git add                                 lib/string-format.js
+git update-index --assume-unchanged     lib/string-format.js
