@@ -1,5 +1,5 @@
 COFFEE = node_modules/.bin/coffee
-MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script
+MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/string-format.git --script scripts/prepublish
 
 SRC = $(shell find src -name '*.coffee')
