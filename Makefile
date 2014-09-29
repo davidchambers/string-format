@@ -1,6 +1,6 @@
 COFFEE = node_modules/.bin/coffee
 MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register
-XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/string-format.git --script scripts/prepublish
+XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/string-format.git
 
 SRC = $(shell find src -name '*.coffee')
 LIB = $(patsubst src/%.coffee,lib/%.js,$(SRC))
@@ -30,8 +30,6 @@ release-major release-minor release-patch:
 .PHONY: setup
 setup:
 	npm install
-	make clean
-	git update-index --assume-unchanged -- $(LIB)
 
 
 .PHONY: test

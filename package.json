@@ -5,6 +5,10 @@
   "author": "David Chambers <dc@davidchambers.me>",
   "keywords": ["string", "formatting", "language", "util"],
   "main": "./lib/string-format",
+  "scripts": {
+    "prepublish": "make clean && make",
+    "test": "make test"
+  },
   "homepage": "https://github.com/davidchambers/string-format",
   "bugs": "https://github.com/davidchambers/string-format/issues",
   "licenses": [{

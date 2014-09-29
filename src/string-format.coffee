@@ -42,7 +42,5 @@ String::format = (args...) -> format this, args...
 
 String::format.transformers = format.transformers = {}
 
-String::format.version = format.version = '0.2.1'
-
 
 module?.exports = format
