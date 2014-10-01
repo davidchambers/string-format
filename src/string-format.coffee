@@ -37,6 +37,11 @@ resolve = (object, key) ->
   value = object[key]
   if typeof value is 'function' then value.call object else value
 
+oldStringFormat = String::format
+
+format.dontExtendString = ->
+  String::format = oldStringFormat
+  return format
 
 String::format = (args...) -> format this, args...
 
