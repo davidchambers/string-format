@@ -23,7 +23,10 @@ format = (template, args...) ->
       throw new ValueError message.format('explicit', 'implicit') if explicit
       value = args[idx++] ? ''
 
-    if fn = format.transformers[transformer] then fn value else value
+    if Object::hasOwnProperty.call format.transformers, transformer
+      format.transformers[transformer] value
+    else
+      value
 
 lookup = (object, key) ->
   unless /^(\d+)([.]|$)/.test key

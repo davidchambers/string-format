@@ -93,6 +93,10 @@ describe 'String::format', ->
     assert.strictEqual text.format(new Array 2), '<a href="/inbox">view messages</a>'
 
 
+  it 'ignores inherited properties of the transformers object', ->
+    assert.strictEqual 'foo-{!toString}-baz'.format('bar'), 'foo-bar-baz'
+
+
   it 'provides a format function when "required"', ->
     assert.strictEqual(
       format("The name's {1}. {0} {1}.", 'James', 'Bond')
