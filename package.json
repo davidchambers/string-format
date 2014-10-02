@@ -21,7 +21,8 @@
   },
   "devDependencies": {
     "coffee-script": "1.8.x",
-    "mocha": "1.13.x",
+    "mocha": "2.x.x",
+    "ramda": "0.8.x",
     "xyz": "0.5.x"
   }
 }
