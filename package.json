@@ -22,6 +22,6 @@
   "devDependencies": {
     "coffee-script": "1.8.x",
     "mocha": "1.13.x",
-    "xyz": "0.4.x"
+    "xyz": "0.5.x"
   }
 }

@@ -19,12 +19,8 @@ clean:
 
 
 .PHONY: release-major release-minor release-patch
-release-major: LEVEL = major
-release-minor: LEVEL = minor
-release-patch: LEVEL = patch
-
 release-major release-minor release-patch:
-	@$(XYZ) --increment $(LEVEL)
+	@$(XYZ) --increment $(@:release-%=%)
 
 
 .PHONY: setup
