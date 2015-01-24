@@ -3,125 +3,139 @@ assert = require 'assert'
 format = require '..'
 
 
-describe 'String::format', ->
+eq = assert.strictEqual
+
+s = (num) -> if num is 1 then '' else 's'
 
 
-  it 'interpolates positional arguments', ->
-    assert.strictEqual(
-      '{0}, you have {1} unread message{2}'.format('Holly', 2, 's')
-      'Holly, you have 2 unread messages')
+describe 'format', ->
 
+  it 'is a function with "create" and "extend" functions', ->
+    eq Object::toString.call(format), '[object Function]'
+    eq Object::toString.call(format.create), '[object Function]'
+    eq Object::toString.call(format.extend), '[object Function]'
 
-  it 'strips unmatched placeholders', ->
-    assert.strictEqual(
-      '{0}, you have {1} unread message{2}'.format('Steve', 1)
-      'Steve, you have 1 unread message')
+  it 'interpolates positional arguments', -> eq(
+    format '{0}, you have {1} unread message{2}', 'Holly', 2, 's'
+    'Holly, you have 2 unread messages'
+  )
 
+  it 'strips unmatched placeholders', -> eq(
+    format '{0}, you have {1} unread message{2}', 'Steve', 1
+    'Steve, you have 1 unread message'
+  )
 
-  it 'allows indexes to be omitted if they are entirely sequential', ->
-    assert.strictEqual(
-      '{}, you have {} unread message{}'.format('Steve', 1)
-      'Steve, you have 1 unread message')
+  it 'allows indexes to be omitted if they are entirely sequential', -> eq(
+    format '{}, you have {} unread message{}', 'Steve', 1
+    'Steve, you have 1 unread message'
+  )
 
-
-  it 'replaces all occurrences of a placeholder', ->
-    assert.strictEqual(
-      'the meaning of life is {0} ({1} x {2} is also {0})'.format(42, 6, 7)
-      'the meaning of life is 42 (6 x 7 is also 42)')
-
+  it 'replaces all occurrences of a placeholder', -> eq(
+    format 'the meaning of life is {0} ({1} x {2} is also {0})', 42, 6, 7
+    'the meaning of life is 42 (6 x 7 is also 42)'
+  )
 
   it 'does not allow explicit and implicit numbering to be intermingled', ->
-    assert.throws (-> '{} {0}'.format('foo', 'bar')), (err) ->
+    assert.throws (-> format '{} {0}', 'foo', 'bar'), (err) ->
       err instanceof Error and
       err.name is 'ValueError' and
       err.message is 'cannot switch from implicit to explicit numbering'
 
-    assert.throws (-> '{1} {}'.format('foo', 'bar')), (err) ->
+    assert.throws (-> format '{1} {}', 'foo', 'bar'), (err) ->
       err instanceof Error and
       err.name is 'ValueError' and
       err.message is 'cannot switch from explicit to implicit numbering'
 
-
   it 'treats "{{" and "}}" as "{" and "}"', ->
-    assert.strictEqual '{{ {}: "{}" }}'.format('foo', 'bar'), '{ foo: "bar" }'
-
+    eq format('{{ {}: "{}" }}', 'foo', 'bar'), '{ foo: "bar" }'
 
   it 'supports property access via dot notation', ->
-    bobby = first_name: 'Bobby', last_name: 'Fischer'
-    garry = first_name: 'Garry', last_name: 'Kasparov'
-    assert.strictEqual(
-      '{0.first_name} {0.last_name} vs. {1.first_name} {1.last_name}'.format(bobby, garry)
-      'Bobby Fischer vs. Garry Kasparov')
-
+    bobby = first: 'Bobby', last: 'Fischer'
+    garry = first: 'Garry', last: 'Kasparov'
+    eq(
+      format '{0.first} {0.last} vs. {1.first} {1.last}', bobby, garry
+      'Bobby Fischer vs. Garry Kasparov'
+    )
 
   it 'accepts a shorthand for properties of the first positional argument', ->
-    bobby = first_name: 'Bobby', last_name: 'Fischer'
-    assert.strictEqual '{first_name} {last_name}'.format(bobby), 'Bobby Fischer'
-
+    bobby = first: 'Bobby', last: 'Fischer'
+    eq format('{first} {last}', bobby), 'Bobby Fischer'
 
   it 'invokes methods', ->
-    assert.strictEqual '{0.toLowerCase}'.format('III'), 'iii'
-    assert.strictEqual '{0.toUpperCase}'.format('iii'), 'III'
-    assert.strictEqual '{0.getFullYear}'.format(new Date '26 Apr 1984'), '1984'
-    assert.strictEqual '{pop}{pop}{pop}'.format(['one', 'two', 'three']), 'threetwoone'
-    assert.strictEqual '{quip.toUpperCase}'.format(quip: -> 'Bazinga!'), 'BAZINGA!'
-
-
-  String::format.transformers.s = (num) -> if num is 1 then '' else 's'
-
-
-  it 'applies transformers to explicit positional arguments', ->
-    text = '{0}, you have {1} unread message{1!s}'
-    assert.strictEqual text.format('Steve', 1), 'Steve, you have 1 unread message'
-    assert.strictEqual text.format('Holly', 2), 'Holly, you have 2 unread messages'
-
-
-  it 'applies transformers to implicit positional arguments', ->
-    text = 'The Cure{!s}, The Door{!s}, The Smith{!s}'
-    assert.strictEqual text.format(1, 2, 3), 'The Cure, The Doors, The Smiths'
-
-
-  it 'applies transformers to properties of explicit positional arguments', ->
-    text = '<a href="/inbox">view message{0.length!s}</a>'
-    assert.strictEqual text.format(new Array 1), '<a href="/inbox">view message</a>'
-    assert.strictEqual text.format(new Array 2), '<a href="/inbox">view messages</a>'
-
-
-  it 'applies transformers to properties of implicit positional arguments', ->
-    text = '<a href="/inbox">view message{length!s}</a>'
-    assert.strictEqual text.format(new Array 1), '<a href="/inbox">view message</a>'
-    assert.strictEqual text.format(new Array 2), '<a href="/inbox">view messages</a>'
-
-
-  it 'ignores inherited properties of the transformers object', ->
-    assert.strictEqual 'foo-{!toString}-baz'.format('bar'), 'foo-bar-baz'
-
-
-  it 'provides a format function when "required"', ->
-    assert.strictEqual(
-      format("The name's {1}. {0} {1}.", 'James', 'Bond')
-      "The name's Bond. James Bond.")
-
+    eq format('{0.toLowerCase}', 'III'), 'iii'
+    eq format('{0.toUpperCase}', 'iii'), 'III'
+    eq format('{0.getFullYear}', new Date '26 Apr 1984'), '1984'
+    eq format('{pop}{pop}{pop}', ['one', 'two', 'three']), 'threetwoone'
+    eq format('{quip.toUpperCase}', quip: -> 'Bazinga!'), 'BAZINGA!'
 
   it "passes applicable tests from Python's test suite", ->
-    assert.strictEqual ''.format(), ''
-    assert.strictEqual 'abc'.format(), 'abc'
-    assert.strictEqual '{0}'.format('abc'), 'abc'
-    assert.strictEqual 'X{0}'.format('abc'), 'Xabc'
-    assert.strictEqual '{0}X'.format('abc'), 'abcX'
-    assert.strictEqual 'X{0}Y'.format('abc'), 'XabcY'
-    assert.strictEqual '{1}'.format(1, 'abc'), 'abc'
-    assert.strictEqual 'X{1}'.format(1, 'abc'), 'Xabc'
-    assert.strictEqual '{1}X'.format(1, 'abc'), 'abcX'
-    assert.strictEqual 'X{1}Y'.format(1, 'abc'), 'XabcY'
-    assert.strictEqual '{0}'.format(-15), '-15'
-    assert.strictEqual '{0}{1}'.format(-15, 'abc'), '-15abc'
-    assert.strictEqual '{0}X{1}'.format(-15, 'abc'), '-15Xabc'
-    assert.strictEqual '{{'.format(), '{'
-    assert.strictEqual '}}'.format(), '}'
-    assert.strictEqual '{{}}'.format(), '{}'
-    assert.strictEqual '{{x}}'.format(), '{x}'
-    assert.strictEqual '{{{0}}}'.format(123), '{123}'
-    assert.strictEqual '{{{{0}}}}'.format(), '{{0}}'
-    assert.strictEqual '}}{{'.format(), '}{'
-    assert.strictEqual '}}x{{'.format(), '}x{'
+    eq format(''), ''
+    eq format('abc'), 'abc'
+    eq format('{0}', 'abc'), 'abc'
+    eq format('X{0}', 'abc'), 'Xabc'
+    eq format('{0}X', 'abc'), 'abcX'
+    eq format('X{0}Y', 'abc'), 'XabcY'
+    eq format('{1}', 1, 'abc'), 'abc'
+    eq format('X{1}', 1, 'abc'), 'Xabc'
+    eq format('{1}X', 1, 'abc'), 'abcX'
+    eq format('X{1}Y', 1, 'abc'), 'XabcY'
+    eq format('{0}', -15), '-15'
+    eq format('{0}{1}', -15, 'abc'), '-15abc'
+    eq format('{0}X{1}', -15, 'abc'), '-15Xabc'
+    eq format('{{'), '{'
+    eq format('}}'), '}'
+    eq format('{{}}'), '{}'
+    eq format('{{x}}'), '{x}'
+    eq format('{{{0}}}', 123), '{123}'
+    eq format('{{{{0}}}}'), '{{0}}'
+    eq format('}}{{'), '}{'
+    eq format('}}x{{'), '}x{'
+
+  describe 'format.create', ->
+
+    it 'returns a format function with access to provided transformers', ->
+      formatA = format.create x: (s) -> "#{s} (formatA)"
+      formatB = format.create x: (s) -> "#{s} (formatB)"
+
+      eq formatA('{!x}', 'abc'), 'abc (formatA)'
+      eq formatB('{!x}', 'abc'), 'abc (formatB)'
+
+  it 'applies transformers to explicit positional arguments', ->
+    $format = format.create {s}
+    text = '{0}, you have {1} unread message{1!s}'
+    eq $format(text, 'Steve', 1), 'Steve, you have 1 unread message'
+    eq $format(text, 'Holly', 2), 'Holly, you have 2 unread messages'
+
+  it 'applies transformers to implicit positional arguments', ->
+    $format = format.create {s}
+    text = 'The Cure{!s}, The Door{!s}, The Smith{!s}'
+    eq $format(text, 1, 2, 3), 'The Cure, The Doors, The Smiths'
+
+  it 'applies transformers to properties of explicit positional arguments', ->
+    $format = format.create {s}
+    text = '<a href="/inbox">view message{0.length!s}</a>'
+    eq $format(text, new Array 1), '<a href="/inbox">view message</a>'
+    eq $format(text, new Array 2), '<a href="/inbox">view messages</a>'
+
+  it 'applies transformers to properties of implicit positional arguments', ->
+    $format = format.create {s}
+    text = '<a href="/inbox">view message{length!s}</a>'
+    eq $format(text, new Array 1), '<a href="/inbox">view message</a>'
+    eq $format(text, new Array 2), '<a href="/inbox">view messages</a>'
+
+  it 'ignores inherited properties of the transformers object', ->
+    eq format('foo-{!toString}-baz', 'bar'), 'foo-bar-baz'
+
+  describe 'format.extend', ->
+
+    it 'defines String::format in the global environment', ->
+      format.extend String.prototype
+      eq Object::toString.call(String::format), '[object Function]'
+      eq 'Hello, {}!'.format('Alice'), 'Hello, Alice!'
+      delete String::format
+
+    it 'defines String::format in a custom environment', ->
+      class Foo
+      format.extend Foo.prototype
+      eq Object::toString.call(Foo::format), '[object Function]'
+      eq Foo::format.call('Hello, {}!', 'Alice'), 'Hello, Alice!'

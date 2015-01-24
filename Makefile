@@ -31,3 +31,4 @@ setup:
 .PHONY: test
 test: all
 	$(MOCHA)
+	$(COFFEE) test/readme.coffee

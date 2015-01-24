@@ -1,158 +1,191 @@
 # String::format
 
-String::format is a small JavaScript utility which adds a `format` method
-to strings. It's inspired by and modelled on Python's [`str.format()`][1].
+String::format is a small JavaScript library for formatting strings, based on
+Python's [`str.format()`][1]. For example:
 
-When `format` is invoked on a string, placeholders within the string are
-replaced with values determined by the arguments provided. A placeholder
-is a sequence of characters beginning with `{` and ending with `}`.
+```javascript
+'"{firstName} {lastName}" <{email}>'.format(user)
+// => '"Jane Smith" <jsmith@example.com>'
+```
 
-### string.format(value1, value2, ..., valueN)
+The equivalent concatenation:
+
+```javascript
+'"' + user.firstName + ' ' + user.lastName + '" <' + user.email + '>'
+// => '"Jane Smith" <jsmith@example.com>'
+```
+
+### Installation
+
+#### Node
+
+1.  Install:
+
+        $ npm install string-format
+
+2.  Require:
+
+        var format = require('string-format')
+
+#### Browser
+
+1.  Define `window.format`:
+
+        <script src="path/to/string-format.js"></script>
+
+### Modes
+
+String::format can be used in two modes: [function mode](#function-mode) and
+[method mode](#method-mode).
+
+#### Function mode
+
+```javascript
+format('Hello, {}!', 'Alice')
+// => 'Hello, Alice!'
+```
+
+In this mode the first argument is a template string and the remaining
+arguments are values to be interpolated.
+
+#### Method mode
+
+```javascript
+'Hello, {}!'.format('Alice')
+// => 'Hello, Alice!'
+```
+
+In this mode values to be interpolated are supplied to the `format` method
+of a template string. This mode is not enabled by default. The method must
+first be defined via [`format.extend`](#formatextendprototype-transformers):
+
+```javascript
+format.extend(String.prototype)
+```
+
+`format(template, $0, $1, …, $N)` and `template.format($0, $1, …, $N)` can then
+be used interchangeably.
+
+### `format(template, $0, $1, …, $N)`
+
+Returns the result of replacing each `{…}` placeholder in the template string
+with its corresponding replacement.
 
 Placeholders may contain numbers which refer to positional arguments:
 
-```coffeescript
-"{0}, you have {1} unread message{2}".format("Holly", 2, "s")
-# "Holly, you have 2 unread messages"
+```javascript
+'{0}, you have {1} unread message{2}'.format('Holly', 2, 's')
+// => 'Holly, you have 2 unread messages'
 ```
 
 Unmatched placeholders produce no output:
 
-```coffeescript
-"{0}, you have {1} unread message{2}".format("Steve", 1)
-# "Steve, you have 1 unread message"
+```javascript
+'{0}, you have {1} unread message{2}'.format('Steve', 1)
+// => 'Steve, you have 1 unread message'
 ```
 
 A format string may reference a positional argument multiple times:
 
-```coffeescript
-"{0} x {0} x {0} = {1}".format(3, 3*3*3)
-# "3 x 3 x 3 = 27"
+```javascript
+"The name's {1}. {0} {1}.".format('James', 'Bond')
+// => "The name's Bond. James Bond."
 ```
 
 Positional arguments may be referenced implicitly:
 
-```coffeescript
-"{}, you have {} unread message{}".format("Steve", 1)
-# "Steve, you have 1 unread message"
+```javascript
+'{}, you have {} unread message{}'.format('Steve', 1)
+// => 'Steve, you have 1 unread message'
 ```
 
 A format string must not contain both implicit and explicit references:
 
-```coffeescript
-"My name is {} {}. Do you like the name {0}?".format("Lemony", "Snicket")
-# ValueError: cannot switch from implicit to explicit numbering
+```javascript
+'My name is {} {}. Do you like the name {0}?'.format('Lemony', 'Snicket')
+// => ValueError: cannot switch from implicit to explicit numbering
 ```
 
 `{{` and `}}` in format strings produce `{` and `}`:
 
-```coffeescript
-"{{}} creates an empty {} in {}".format("dictionary", "Python")
-# "{} creates an empty dictionary in Python"
+```javascript
+'{{}} creates an empty {} in {}'.format('dictionary', 'Python')
+// => '{} creates an empty dictionary in Python'
 ```
 
 Dot notation may be used to reference object properties:
 
-```coffeescript
-bobby = first_name: "Bobby", last_name: "Fischer"
-garry = first_name: "Garry", last_name: "Kasparov"
+```javascript
+var bobby = {firstName: 'Bobby', lastName: 'Fischer'}
+var garry = {firstName: 'Garry', lastName: 'Kasparov'}
 
-"{0.first_name} {0.last_name} vs. {1.first_name} {1.last_name}".format(bobby, garry)
-# "Bobby Fischer vs. Garry Kasparov"
+'{0.firstName} {0.lastName} vs. {1.firstName} {1.lastName}'.format(bobby, garry)
+// => 'Bobby Fischer vs. Garry Kasparov'
 ```
 
-When referencing the first positional argument, `0.` may be omitted:
+`0.` may be omitted when referencing a property of `{0}`:
 
-```coffeescript
-repo = owner: "pypy", slug: "pypy", followers: [...]
+```javascript
+var repo = {owner: 'davidchambers', slug: 'string-format'}
 
-"{owner}/{slug} has {followers.length} followers".format(repo)
-# "pypy/pypy has 516 followers"
+'https://github.com/{owner}/{slug}'.format(repo)
+// => 'https://github.com/davidchambers/string-format'
 ```
 
-If the referenced property is a method, it is invoked and the result is used
-as the replacement string:
+If the referenced property is a method, it is invoked with no arguments to
+determine the replacement:
 
-```coffeescript
-me = name: "David", dob: new Date "26 Apr 1984"
+```javascript
+var sheldon = {
+  firstName:  'Sheldon',
+  lastName:   'Cooper',
+  dob:        new Date('1970-01-01'),
+  fullName:   function() { return '{firstName} {lastName}'.format(this) },
+  quip:       function() { return 'Bazinga!' }
+}
 
-"{name} was born in {dob.getFullYear}".format(me)
-# "David was born in 1984"
-
-sheldon = quip: -> "Bazinga!"
+'{fullName} was born at precisely {dob.toISOString}'.format(sheldon)
+// => 'Sheldon Cooper was born at precisely 1970-01-01T00:00:00.000Z'
 
 "I've always wanted to go to a goth club. {quip.toUpperCase}".format(sheldon)
-# "I've always wanted to go to a goth club. BAZINGA!"
+// => "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
-### String.prototype.format.transformers
+### `format.extend(prototype[, transformers])`
 
-“Transformers” can be attached to `String.prototype.format.transformers`:
+This function defines a `format` method on the provided prototype (presumably
+`String.prototype`). One may provide an object mapping names to transformers.
+A transformer is applied if its name appears, prefixed with `!`, after a field
+name in a template string.
 
-```coffeescript
-String::format.transformers.upper = (str) -> str.toUpperCase()
+```javascript
+format.extend(String.prototype, {
+  escape: function(s) {
+    return s.replace(/[&<>"'`]/g, function(c) {
+      return '&#' + c.charCodeAt(0) + ';'
+    })
+  },
+  upper: function(s) { return s.toUpperCase() }
+})
 
-"Batman's preferred onomatopoeia: {0!upper}".format("pow!")
-# "Batman's preferred onomatopoeia: POW!"
-```
+'Hello, {!upper}!'.format('Alice')
+// => 'Hello, ALICE!'
 
-A transformer could sanitizing untrusted input:
+var restaurant = {
+  name: 'Anchor & Hope',
+  url: 'http://anchorandhopesf.com/'
+}
 
-```coffeescript
-String::format.transformers.escape = (str) ->
-  str.replace /[&<>"'`]/g, (chr) -> "&#" + chr.charCodeAt(0) + ";"
-
-"<p class=status>{!escape}</p>".format("I <3 EICH")
-# "<p class=status>I &#60;3 EICH</p>"
-```
-
-Or pluralize nouns, perhaps:
-
-```coffeescript
-String::format.transformers.s = (num) -> if num is 1 then "" else "s"
-
-"{0}, you have {1} unread message{1!s}".format("Holly", 2)
-# "Holly, you have 2 unread messages"
-
-"{0}, you have {1} unread message{1!s}".format("Steve", 1)
-# "Steve, you have 1 unread message"
-```
-
-String::format does not currently define any transformers.
-
-### format(template, value1, value2, ..., valueN)
-
-The module provides a format function when "required":
-
-```coffeescript
-format = require "string-format"
-
-format("The name's {1}. {0} {1}.", "James", "Bond")
-# "The name's Bond. James Bond."
-```
-
-`format(str, x, y, z)` is equivalent to `str.format(x, y, z)`.
-
-### Creating reusable template functions
-
-If a format string is used in multiple places, one could assign it to
-a variable to avoid repetition. The idiomatic alternative is to create
-a reusable template function via [`Function::bind`][2]:
-
-```coffeescript
-greet = String::format.bind "{0}, you have {1} unread message{1!s}"
-
-greet("Holly", 2)
-# "Holly, you have 2 unread messages"
-
-greet("Steve", 1)
-# "Steve, you have 1 unread message"
+'<a href="{url!escape}">{name!escape}</a>'.format(restaurant)
+// => '<a href="http://anchorandhopesf.com/">Anchor &#38; Hope</a>'
 ```
 
 ### Running the test suite
 
-    npm install
-    npm test
+```console
+$ npm install
+$ npm test
+```
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format
