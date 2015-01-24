@@ -19,6 +19,11 @@
     "type": "git",
     "url": "git://github.com/davidchambers/string-format.git"
   },
+  "files": [
+    "README.md",
+    "lib/string-format.js",
+    "package.json"
+  ],
   "devDependencies": {
     "coffee-script": "1.8.x",
     "mocha": "2.x.x",
