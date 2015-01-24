@@ -1,9 +1,14 @@
 {
   "name": "string-format",
-  "version": "0.2.1",
+  "version": "0.5.0",
   "description": "Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.",
   "author": "David Chambers <dc@davidchambers.me>",
-  "keywords": ["string", "formatting", "language", "util"],
+  "keywords": [
+    "string",
+    "formatting",
+    "language",
+    "util"
+  ],
   "main": "./lib/string-format",
   "scripts": {
     "prepublish": "make clean && make",
@@ -11,10 +16,12 @@
   },
   "homepage": "https://github.com/davidchambers/string-format",
   "bugs": "https://github.com/davidchambers/string-format/issues",
-  "licenses": [{
-    "type": "WTFPL",
-    "url": "https://raw.github.com/davidchambers/string-format/master/LICENSE"
-  }],
+  "licenses": [
+    {
+      "type": "WTFPL",
+      "url": "https://raw.github.com/davidchambers/string-format/master/LICENSE"
+    }
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/davidchambers/string-format.git"
