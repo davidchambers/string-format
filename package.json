@@ -1,7 +1,7 @@
 {
   "name": "string-format",
   "version": "0.5.0",
-  "description": "Adds a `format` method to `String.prototype`. Inspired by Python's `str.format()`.",
+  "description": "String formatting inspired by Python's str.format()",
   "author": "David Chambers <dc@davidchambers.me>",
   "keywords": [
     "string",
@@ -9,30 +9,23 @@
     "language",
     "util"
   ],
-  "main": "./lib/string-format",
-  "scripts": {
-    "prepublish": "make clean && make",
-    "test": "make test"
-  },
   "homepage": "https://github.com/davidchambers/string-format",
   "bugs": "https://github.com/davidchambers/string-format/issues",
-  "licenses": [
-    {
-      "type": "WTFPL",
-      "url": "https://raw.github.com/davidchambers/string-format/master/LICENSE"
-    }
-  ],
+  "license": "WTFPL",
   "repository": {
     "type": "git",
     "url": "git://github.com/davidchambers/string-format.git"
   },
   "files": [
+    "LICENSE",
     "README.md",
-    "lib/string-format.js",
+    "index.js",
     "package.json"
   ],
   "devDependencies": {
-    "coffee-script": "1.8.x",
+    "istanbul": "0.3.x",
+    "jscs": "2.1.x",
+    "jshint": "2.8.x",
     "mocha": "2.x.x",
     "ramda": "0.8.x",
     "xyz": "0.5.x"
