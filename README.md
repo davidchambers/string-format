@@ -1,6 +1,6 @@
-# String::format
+# string-format
 
-String::format is a small JavaScript library for formatting strings, based on
+string-format is a small JavaScript library for formatting strings, based on
 Python's [`str.format()`][1]. For example:
 
 ```javascript
@@ -35,7 +35,7 @@ The equivalent concatenation:
 
 ### Modes
 
-String::format can be used in two modes: [function mode](#function-mode) and
+string-format can be used in two modes: [function mode](#function-mode) and
 [method mode](#method-mode).
 
 #### Function mode
@@ -60,7 +60,7 @@ of a template string. This mode is not enabled by default. The method must
 first be defined via [`format.extend`](#formatextendprototype-transformers):
 
 ```javascript
-format.extend(String.prototype)
+format.extend(String.prototype, {})
 ```
 
 `format(template, $0, $1, …, $N)` and `template.format($0, $1, …, $N)` can then
@@ -151,10 +151,10 @@ var sheldon = {
 // => "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
-### `format.extend(prototype[, transformers])`
+### `format.extend(prototype, transformers)`
 
-This function defines a `format` method on the provided prototype (presumably
-`String.prototype`). One may provide an object mapping names to transformers.
+This function takes a prototype (presumably `String.prototype`) and an object
+mapping names to transformers, and defines a `format` method on the prototype.
 A transformer is applied if its name appears, prefixed with `!`, after a field
 name in a template string.
 

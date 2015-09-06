@@ -1,21 +1,17 @@
-COFFEE = node_modules/.bin/coffee
-MOCHA = node_modules/.bin/mocha --compilers coffee:coffee-script/register
+ISTANBUL = node --harmony node_modules/.bin/istanbul
+JSCS = node_modules/.bin/jscs
+JSHINT = node_modules/.bin/jshint
 XYZ = node_modules/.bin/xyz --message X.Y.Z --tag X.Y.Z --repo git@github.com:davidchambers/string-format.git
-
-SRC = $(shell find src -name '*.coffee')
-LIB = $(patsubst src/%.coffee,lib/%.js,$(SRC))
 
 
 .PHONY: all
-all: $(LIB)
-
-lib/%.js: src/%.coffee
-	$(COFFEE) --compile --output $(@D) -- $<
+all:
 
 
-.PHONY: clean
-clean:
-	rm -f -- $(LIB)
+.PHONY: lint
+lint: index.js test/index.js test/readme.js
+	$(JSHINT) -- $^
+	$(JSCS) -- $^
 
 
 .PHONY: release-major release-minor release-patch
@@ -29,6 +25,7 @@ setup:
 
 
 .PHONY: test
-test: all
-	$(MOCHA)
-	$(COFFEE) test/readme.coffee
+test:
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- test/index.js
+	$(ISTANBUL) check-coverage --branches 100
+	node test/readme.js
