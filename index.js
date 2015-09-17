@@ -94,4 +94,4 @@
     global.format = format;
   }
 
-}.call(this));
+}.call(this, this));
