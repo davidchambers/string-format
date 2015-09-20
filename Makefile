@@ -26,6 +26,6 @@ setup:
 
 .PHONY: test
 test:
-	$(ISTANBUL) cover node_modules/.bin/_mocha -- test/index.js
+	$(ISTANBUL) cover node_modules/.bin/_mocha -- --timeout 60000 test/index.js
 	$(ISTANBUL) check-coverage --branches 100
 	node test/readme.js

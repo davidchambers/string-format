@@ -27,7 +27,8 @@ var extractChunks = R.pipe(
       accum.inExample && line !== '```\n' ?
         {
           inExample: true,
-          examples: R.append(R.last(accum.examples) + line,
+          examples: R.append(R.last(accum.examples) +
+                               line.replace(/[ ]+[/][/].*/, ''),
                              R.slice(0, -1, accum.examples))
         } :
       line === '```javascript\n' ?

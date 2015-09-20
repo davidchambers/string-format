@@ -26,6 +26,8 @@
     "istanbul": "0.3.x",
     "jscs": "2.1.x",
     "jshint": "2.8.x",
+    "lodash.random": "3.x.x",
+    "lodash.sample": "3.x.x",
     "mocha": "2.x.x",
     "ramda": "0.8.x",
     "xyz": "0.5.x"
