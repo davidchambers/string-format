@@ -89,7 +89,7 @@
   if (typeof module !== 'undefined') {
     module.exports = format;
   } else if (typeof define === 'function' && define.amd) {
-    define(format);
+    define(function() { return format; });
   } else {
     global.format = format;
   }
