@@ -67,9 +67,7 @@
       var call = key.split(' ');
       var fn = call[0];
       var args = call.slice(1);
-      obj = typeof obj[fn] === 'function'
-      	? obj[fn].apply(obj, args)
-        : obj[key];
+      obj = typeof obj[fn] === 'function' ? obj[fn].apply(obj, args) : obj[key];
     }
     return obj;
   };
