@@ -64,7 +64,10 @@
     }
     for (var idx = 0; idx < path.length; idx += 1) {
       var key = path[idx];
-      obj = typeof obj[key] === 'function' ? obj[key]() : obj[key];
+      var call = key.split(' ');
+      var fn = call[0];
+      var args = call.slice(1);
+      obj = typeof obj[fn] === 'function' ? obj[fn].apply(obj, args) : obj[key];
     }
     return obj;
   };
