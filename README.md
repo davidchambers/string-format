@@ -189,4 +189,3 @@ $ npm test
 
 
 [1]: http://docs.python.org/library/stdtypes.html#str.format
-[2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind

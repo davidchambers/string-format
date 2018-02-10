@@ -1,23 +1,21 @@
-/* global define, module */
-
-;(function(global) {
+void function(global) {
 
   'use strict';
 
   //  ValueError :: String -> Error
-  var ValueError = function(message) {
+  function ValueError(message) {
     var err = new Error(message);
     err.name = 'ValueError';
     return err;
-  };
+  }
 
   //  defaultTo :: a,a? -> a
-  var defaultTo = function(x, y) {
+  function defaultTo(x, y) {
     return y == null ? x : y;
-  };
+  }
 
   //  create :: Object -> String,*... -> String
-  var create = function(transformers) {
+  function create(transformers) {
     return function(template) {
       var args = Array.prototype.slice.call(arguments, 1);
       var idx = 0;
@@ -25,10 +23,11 @@
 
       return template.replace(
         /([{}])\1|[{](.*?)(?:!(.+?))?[}]/g,
-        function(match, literal, key, xf) {
+        function(match, literal, _key, xf) {
           if (literal != null) {
             return literal;
           }
+          var key = _key;
           if (key.length > 0) {
             if (state === 'IMPLICIT') {
               throw ValueError('cannot switch from ' +
@@ -56,9 +55,11 @@
         }
       );
     };
-  };
+  }
 
-  var lookup = function(obj, path) {
+  function lookup(_obj, _path) {
+    var obj = _obj;
+    var path = _path;
     if (!/^\d+$/.test(path[0])) {
       path = ['0'].concat(path);
     }
@@ -67,7 +68,7 @@
       obj = typeof obj[key] === 'function' ? obj[key]() : obj[key];
     }
     return obj;
-  };
+  }
 
   //  format :: String,*... -> String
   var format = create({});
@@ -94,4 +95,4 @@
     global.format = format;
   }
 
-}.call(this, this));
+}.call(this, this);

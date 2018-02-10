@@ -22,11 +22,14 @@
     "index.js",
     "package.json"
   ],
+  "dependencies": {},
   "devDependencies": {
-    "istanbul": "0.3.x",
-    "jscs": "2.1.x",
-    "jshint": "2.8.x",
-    "mocha": "2.x.x",
-    "xyz": "1.0.x"
+    "sanctuary-scripts": "1.2.x"
+  },
+  "scripts": {
+    "doctest": "sanctuary-doctest",
+    "lint": "sanctuary-lint",
+    "release": "sanctuary-release",
+    "test": "npm run lint && sanctuary-test && npm run doctest"
   }
 }

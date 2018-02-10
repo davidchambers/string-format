@@ -1,7 +1,5 @@
 'use strict';
 
-/* jshint node: true */
-
 var fs = require('fs');
 var path = require('path');
 var vm = require('vm');
@@ -10,12 +8,12 @@ var format = require('..');
 
 
 //  quote :: String -> String
-var quote = function(s) {
+function quote(s) {
   return "'" + s.replace(/'/g, "\\'") + "'";
-};
+}
 
 
-var extractChunks = function(filename) {
+function extractChunks(filename) {
   return fs
   .readFileSync(path.join(__dirname, '..', filename), 'utf8')
   .split(/^/m)
@@ -51,7 +49,7 @@ var extractChunks = function(filename) {
     }, '');
   })
   .map(function(s) { return 'format.extend(String.prototype, {});\n\n' + s; });
-};
+}
 
 extractChunks('README.md').forEach(function(chunk) {
   try {
