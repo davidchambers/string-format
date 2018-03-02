@@ -11,7 +11,7 @@
   ],
   "homepage": "https://github.com/davidchambers/string-format",
   "bugs": "https://github.com/davidchambers/string-format/issues",
-  "license": "WTFPL",
+  "license": "(WTFPL OR MIT)",
   "repository": {
     "type": "git",
     "url": "git://github.com/davidchambers/string-format.git"
