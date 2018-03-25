@@ -5,8 +5,6 @@
 
 var assert = require('assert');
 
-var R = require('ramda');
-
 var format = require('..');
 
 
@@ -85,7 +83,7 @@ describe('format', function() {
     eq(format('{0.toUpperCase}', 'iii'), 'III');
     eq(format('{0.getFullYear}', new Date('26 Apr 1984')), '1984');
     eq(format('{pop}{pop}{pop}', ['one', 'two', 'three']), 'threetwoone');
-    eq(format('{quip.toUpperCase}', {quip: R.always('Bazinga!')}), 'BAZINGA!');
+    eq(format('{quip.toUpperCase}', {quip: function() { return 'Bazinga!'; }}), 'BAZINGA!');
   });
 
   it("passes applicable tests from Python's test suite", function() {
@@ -115,7 +113,7 @@ describe('format', function() {
   describe('format.create', function() {
 
     it('returns a format function with access to provided transformers', function() {
-      var append = R.flip(R.concat);
+      var append = function(suffix) { return function(s) { return s + suffix; }; };
       var formatA = format.create({x: append(' (formatA)')});
       var formatB = format.create({x: append(' (formatB)')});
 
