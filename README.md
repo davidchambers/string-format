@@ -21,17 +21,23 @@ The equivalent concatenation:
 
 1.  Install:
 
-        $ npm install string-format
+    ```console
+    $ npm install string-format
+    ```
 
 2.  Require:
 
-        var format = require('string-format')
+    ```javascript
+    var format = require('string-format')
+    ```
 
 #### Browser
 
 1.  Define `window.format`:
 
-        <script src="path/to/string-format.js"></script>
+    ```html
+    <script src="path/to/string-format.js"></script>
+    ```
 
 ### Modes
 
