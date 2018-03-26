@@ -1,6 +1,6 @@
 {
   "name": "string-format",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "String formatting inspired by Python's str.format()",
   "author": "David Chambers <dc@davidchambers.me>",
   "keywords": [
