@@ -28,7 +28,7 @@ The equivalent concatenation:
 2.  Require:
 
     ```javascript
-    var format = require('string-format')
+    const format = require('string-format')
     ```
 
 #### Browser
@@ -122,8 +122,8 @@ A format string must not contain both implicit and explicit references:
 Dot notation may be used to reference object properties:
 
 ```javascript
-var bobby = {firstName: 'Bobby', lastName: 'Fischer'}
-var garry = {firstName: 'Garry', lastName: 'Kasparov'}
+const bobby = {firstName: 'Bobby', lastName: 'Fischer'}
+const garry = {firstName: 'Garry', lastName: 'Kasparov'}
 
 '{0.firstName} {0.lastName} vs. {1.firstName} {1.lastName}'.format(bobby, garry)
 // => 'Bobby Fischer vs. Garry Kasparov'
@@ -132,7 +132,7 @@ var garry = {firstName: 'Garry', lastName: 'Kasparov'}
 `0.` may be omitted when referencing a property of `{0}`:
 
 ```javascript
-var repo = {owner: 'davidchambers', slug: 'string-format'}
+const repo = {owner: 'davidchambers', slug: 'string-format'}
 
 'https://github.com/{owner}/{slug}'.format(repo)
 // => 'https://github.com/davidchambers/string-format'
@@ -142,12 +142,12 @@ If the referenced property is a method, it is invoked with no arguments to
 determine the replacement:
 
 ```javascript
-var sheldon = {
+const sheldon = {
   firstName:  'Sheldon',
   lastName:   'Cooper',
   dob:        new Date('1970-01-01'),
-  fullName:   function() { return '{firstName} {lastName}'.format(this) },
-  quip:       function() { return 'Bazinga!' }
+  fullName:   function() { return this.firstName + ' ' + this.lastName },
+  quip:       function() { return 'Bazinga!' },
 }
 
 '{fullName} was born at precisely {dob.toISOString}'.format(sheldon)
@@ -166,21 +166,14 @@ name in a template string.
 
 ```javascript
 format.extend(String.prototype, {
-  escape: function(s) {
-    return s.replace(/[&<>"'`]/g, function(c) {
-      return '&#' + c.charCodeAt(0) + ';'
-    })
-  },
-  upper: function(s) { return s.toUpperCase() }
+  escape: s => s.replace(/[&<>"'`]/g, c => '&#' + c.charCodeAt(0) + ';'),
+  upper:  s => s.toUpperCase(),
 })
 
 'Hello, {!upper}!'.format('Alice')
 // => 'Hello, ALICE!'
 
-var restaurant = {
-  name: 'Anchor & Hope',
-  url: 'http://anchorandhopesf.com/'
-}
+const restaurant = {name: 'Anchor & Hope', url: 'http://anchorandhopesf.com/'}
 
 '<a href="{url!escape}">{name!escape}</a>'.format(restaurant)
 // => '<a href="http://anchorandhopesf.com/">Anchor &#38; Hope</a>'
