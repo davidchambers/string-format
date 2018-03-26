@@ -4,7 +4,7 @@ node_js:
   - "4"
   - "6"
   - "8"
-install:
-  - make setup
-script:
-  - make test lint
+before_install:
+  - git fetch origin refs/heads/master:refs/heads/master
+  - if [[ "$TRAVIS_PULL_REQUEST_BRANCH" ]] ; then git checkout -b "$TRAVIS_PULL_REQUEST_BRANCH" ; fi
+  - if [[ "$TRAVIS_NODE_VERSION" == 4 ]] ; then npm install --global npm@3.x.x ; fi
