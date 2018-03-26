@@ -157,6 +157,27 @@ const sheldon = {
 // => "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
+### `format.create(transformers)`
+
+This function takes an object mapping names to transformers and returns a
+formatting function. A transformer is applied if its name appears, prefixed
+with `!`, after a field name in a template string.
+
+```javascript
+const fmt = format.create({
+  escape: s => s.replace(/[&<>"'`]/g, c => '&#' + c.charCodeAt(0) + ';'),
+  upper:  s => s.toUpperCase(),
+})
+
+fmt('Hello, {!upper}!', 'Alice')
+// => 'Hello, ALICE!'
+
+const restaurant = {name: 'Anchor & Hope', url: 'http://anchorandhopesf.com/'}
+
+fmt('<a href="{url!escape}">{name!escape}</a>', restaurant)
+// => '<a href="http://anchorandhopesf.com/">Anchor &#38; Hope</a>'
+```
+
 ### `format.extend(prototype, transformers)`
 
 This function takes a prototype (presumably `String.prototype`) and an object
