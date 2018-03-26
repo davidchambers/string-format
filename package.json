@@ -27,7 +27,6 @@
     "jscs": "2.1.x",
     "jshint": "2.8.x",
     "mocha": "2.x.x",
-    "ramda": "0.8.x",
     "xyz": "1.0.x"
   }
 }
