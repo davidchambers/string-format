@@ -11,7 +11,7 @@
   ],
   "homepage": "https://github.com/davidchambers/string-format",
   "bugs": "https://github.com/davidchambers/string-format/issues",
-  "license": "(WTFPL OR MIT)",
+  "license": "WTFPL OR MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/davidchambers/string-format.git"
@@ -24,7 +24,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "sanctuary-scripts": "1.2.x"
+    "sanctuary-scripts": "1.3.x"
   },
   "scripts": {
     "doctest": "sanctuary-doctest",
