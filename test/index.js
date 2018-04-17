@@ -59,6 +59,13 @@ suite('format', function() {
     );
   });
 
+  test('uses default string representations', function() {
+    eq(format('result: {}', null), 'result: null');
+    eq(format('result: {}', undefined), 'result: undefined');
+    eq(format('result: {}', [1, 2, 3]), 'result: 1,2,3');
+    eq(format('result: {}', {foo: 42}), 'result: [object Object]');
+  });
+
   test('treats "{{" and "}}" as "{" and "}"', function() {
     eq(format('{{ {}: "{}" }}', 'foo', 'bar'), '{ foo: "bar" }');
   });
@@ -73,6 +80,21 @@ suite('format', function() {
   test('accepts a shorthand for properties of the first positional argument', function() {
     var bobby = {first: 'Bobby', last: 'Fischer'};
     eq(format('{first} {last}', bobby), 'Bobby Fischer');
+  });
+
+  test('defaults to "" if lookup fails', function() {
+    eq(format('result: {foo.bar.baz}', null), 'result: ');
+    eq(format('result: {foo.bar.baz}', 'x'), 'result: ');
+    eq(format('result: {foo.bar.baz}', {}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: null}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: 'x'}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: {}}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: null}}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: 'x'}}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: {}}}), 'result: ');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: {baz: null}}}), 'result: null');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: {baz: 'x'}}}), 'result: x');
+    eq(format('result: {foo.bar.baz}', {foo: {bar: {baz: {}}}}), 'result: [object Object]');
   });
 
   test('invokes methods', function() {
