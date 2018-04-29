@@ -143,11 +143,11 @@ determine the replacement:
 
 ```javascript
 const sheldon = {
-  firstName:  'Sheldon',
-  lastName:   'Cooper',
-  dob:        new Date('1970-01-01'),
-  fullName:   function() { return this.firstName + ' ' + this.lastName },
-  quip:       function() { return 'Bazinga!' },
+  firstName: 'Sheldon',
+  lastName: 'Cooper',
+  dob: new Date('1970-01-01'),
+  fullName: function() { return this.firstName + ' ' + this.lastName },
+  quip: function() { return 'Bazinga!' },
 }
 
 '{fullName} was born at precisely {dob.toISOString}'.format(sheldon)
@@ -166,7 +166,7 @@ with `!`, after a field name in a template string.
 ```javascript
 const fmt = format.create({
   escape: s => s.replace(/[&<>"'`]/g, c => '&#' + c.charCodeAt(0) + ';'),
-  upper:  s => s.toUpperCase(),
+  upper: s => s.toUpperCase(),
 })
 
 fmt('Hello, {!upper}!', 'Alice')
@@ -188,7 +188,7 @@ name in a template string.
 ```javascript
 format.extend(String.prototype, {
   escape: s => s.replace(/[&<>"'`]/g, c => '&#' + c.charCodeAt(0) + ';'),
-  upper:  s => s.toUpperCase(),
+  upper: s => s.toUpperCase(),
 })
 
 'Hello, {!upper}!'.format('Alice')
