@@ -9,11 +9,6 @@ void function(global) {
     return err;
   }
 
-  //  defaultTo :: a,a? -> a
-  function defaultTo(x, y) {
-    return y == null ? x : y;
-  }
-
   //  create :: Object -> String,*... -> String
   function create(transformers) {
     return function(template) {
@@ -43,7 +38,23 @@ void function(global) {
             key = String(idx);
             idx += 1;
           }
-          var value = defaultTo('', lookup(args, key.split('.')));
+
+          //  1.  Split the key into a lookup path.
+          //  2.  If the first path component is not an index, prepend '0'.
+          //  3.  Reduce the lookup path to a single result. If the lookup
+          //      succeeds the result is a singleton array containing the
+          //      value at the lookup path; otherwise the result is [].
+          //  4.  Unwrap the result by reducing with '' as the default value.
+          var path = key.split('.');
+          var value = (/^\d+$/.test(path[0]) ? path : ['0'].concat(path))
+            .reduce(function(maybe, key) {
+              return maybe.reduce(function(_, x) {
+                return x != null && key in Object(x) ?
+                  [typeof x[key] === 'function' ? x[key]() : x[key]] :
+                  [];
+              }, []);
+            }, [args])
+            .reduce(function(_, x) { return x; }, '');
 
           if (xf == null) {
             return value;
@@ -55,19 +66,6 @@ void function(global) {
         }
       );
     };
-  }
-
-  function lookup(_obj, _path) {
-    var obj = _obj;
-    var path = _path;
-    if (!/^\d+$/.test(path[0])) {
-      path = ['0'].concat(path);
-    }
-    for (var idx = 0; idx < path.length; idx += 1) {
-      var key = path[idx];
-      obj = typeof obj[key] === 'function' ? obj[key]() : obj[key];
-    }
-    return obj;
   }
 
   //  format :: String,*... -> String
