@@ -5,14 +5,12 @@
     {
       "files": ["*.md"],
       "plugins": ["markdown"],
-      "env": {"es6": true, "node": true},
       "globals": {"format": false, "user": false},
       "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "max-len": ["off"],
         "no-unused-vars": ["error", {"varsIgnorePattern": "^format$"}],
-        "semi": ["error", "never"],
-        "strict": ["off"]
+        "semi": ["error", "never"]
       }
     }
   ]
