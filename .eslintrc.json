@@ -8,7 +8,7 @@
       "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "max-len": ["off"],
-        "no-unused-vars": ["error", {"varsIgnorePattern": "^format$"}],
+        "no-unused-vars": ["error", {"varsIgnorePattern": "^(format|user)$"}],
         "semi": ["off"]
       }
     }
