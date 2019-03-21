@@ -63,7 +63,7 @@ arguments are values to be interpolated.
 
 In this mode values to be interpolated are supplied to the `format` method
 of a template string. This mode is not enabled by default. The method must
-first be defined via [`format.extend`](#formatextendprototype-transformers):
+first be defined via [`format.extend`](#format.extend):
 
 ```javascript
 format.extend (String.prototype, {})
@@ -71,6 +71,8 @@ format.extend (String.prototype, {})
 
 `format (template, $0, $1, …, $N)` and `template.format ($0, $1, …, $N)` can
 then be used interchangeably.
+
+<a name="format"></a>
 
 ### `format (template, $0, $1, …, $N)`
 
@@ -157,6 +159,8 @@ const sheldon = {
 // => "I've always wanted to go to a goth club. BAZINGA!"
 ```
 
+<a name="format.create"></a>
+
 ### `format.create (transformers)`
 
 This function takes an object mapping names to transformers and returns a
@@ -177,6 +181,8 @@ const restaurant = {name: 'Anchor & Hope', url: 'http://anchorandhopesf.com/'}
 fmt ('<a href="{url!escape}">{name!escape}</a>', restaurant)
 // => '<a href="http://anchorandhopesf.com/">Anchor &#38; Hope</a>'
 ```
+
+<a name="format.extend"></a>
 
 ### `format.extend (prototype, transformers)`
 
