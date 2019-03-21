@@ -4,13 +4,12 @@
   "overrides": [
     {
       "files": ["*.md"],
-      "plugins": ["markdown"],
       "globals": {"format": false, "user": false},
       "rules": {
         "comma-dangle": ["error", "always-multiline"],
         "max-len": ["off"],
         "no-unused-vars": ["error", {"varsIgnorePattern": "^format$"}],
-        "semi": ["error", "never"]
+        "semi": ["off"]
       }
     }
   ]
