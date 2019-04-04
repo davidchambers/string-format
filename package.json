@@ -24,7 +24,7 @@
   ],
   "dependencies": {},
   "devDependencies": {
-    "sanctuary-scripts": "3.1.x"
+    "sanctuary-scripts": "3.2.x"
   },
   "scripts": {
     "doctest": "sanctuary-doctest",
